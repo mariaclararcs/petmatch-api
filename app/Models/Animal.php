@@ -5,17 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Animal extends Model
 {
-    use HasFactory, SoftDeletes, HasUuids;
+    /** @use HasFactory<\Database\Factories\AnimalFactory> */
+    use HasFactory;
+
+    use SoftDeletes;
+    use HasUuids;
 
     protected $table = 'animals';
 
     protected $fillable = [
-        'id',
         'ong_id',
         'name',
         'age',
@@ -24,18 +26,6 @@ class Animal extends Model
         'size',
         'shelter_date',
         'image',
-        'description',
+        'description'
     ];
-
-    protected $casts = [
-        'id' => 'string',
-        'ong_id' => 'string',
-        'shelter_date' => 'datetime',
-        'deleted_at' => 'datetime',
-    ];
-
-    public function ongs(): BelongsTo
-    {
-        return $this->belongsTo(Ong::class, 'ong_id');
-    }
 }

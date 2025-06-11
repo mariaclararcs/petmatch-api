@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Services\Animal;
+namespace App\Services\Ong;
 
-use App\Models\Animal;
+use App\Models\Ong;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 
-class AnimalService
+class OngService
 {
 
     /**
@@ -15,11 +15,11 @@ class AnimalService
      *     page: string,
      *     per_page: string,
      * }  $data
-     * @return LengthAwarePaginator<Animal>
+     * @return LengthAwarePaginator<Ong>
      */
     public function index(array $data): LengthAwarePaginator
     {
-        return Animal::query()->when($data['search'], fn (Builder $query)  =>
+        return Ong::query()->when($data['search'], fn (Builder $query)  =>
             $query->where('id', 'like', '%$search%')
         )->paginate(perPage: (int) $data['per_page'], page: (int) $data['page']);
     }
@@ -27,9 +27,9 @@ class AnimalService
     /**
     * @param array<string,mixed> $data
     */
-    public function store(array $data): Animal
+    public function store(array $data): Ong
     {
-        return Animal::query()->create($data);
+        return Ong::query()->create($data);
     }
 
     /**
@@ -37,15 +37,15 @@ class AnimalService
     */
     public function destroy(array $data): ?bool
     {
-        return Animal::query()->findOrFail($data['id'])->delete();
+        return Ong::query()->findOrFail($data['id'])->delete();
     }
 
     /**
     * @param array{id:string} $data
     */
-    public function show(array $data): ?Animal
+    public function show(array $data): ?Ong
     {
-        return Animal::query()->findOrFail($data['id']);
+        return Ong::query()->findOrFail($data['id']);
     }
 
     /**
@@ -53,6 +53,6 @@ class AnimalService
     */
     public function update(array $data): bool
     {
-        return Animal::query()->findOrFail($data['id'])->update($data);
+        return Ong::query()->findOrFail($data['id'])->update($data);
     }
 }

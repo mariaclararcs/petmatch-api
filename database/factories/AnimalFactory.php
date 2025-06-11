@@ -3,8 +3,8 @@
 namespace Database\Factories;
 
 use App\Models\Ong;
-use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Animal>
@@ -28,7 +28,7 @@ class AnimalFactory extends Factory
             'size' => $this->faker->randomElement(['small', 'medium', 'large']),
             'shelter_date' => $this->faker->dateTimeBetween('-5 years', 'now')->format('Y-m-d'),
             'image' => 'https://www.upload.ee/image/17942234/a323060aa972785ea02543d0f2003554.jpg',
-            'description' => $this->faker->boolean(80) ? $this->faker->paragraph() : null,
+            'description' => 'description for animal',
             'created_at' => now(),
             'updated_at' => now(),
         ];

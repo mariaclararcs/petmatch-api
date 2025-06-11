@@ -1,23 +1,22 @@
 <?php
 
-namespace App\Http\Controllers\Animal;
+namespace App\Http\Controllers\Ong;
 
 use App\Builder\ReturnApi;
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Animal\DestroyRequest;
-use App\Http\Requests\Animal\IndexRequest;
-use App\Http\Requests\Animal\StoreRequest;
-use App\Http\Requests\Animal\UpdateRequest;
-use App\Http\Resources\Animal\AnimalResource;
-use App\Models\Animal;
-use App\Services\Animal\AnimalService;
+use App\Http\Requests\Ong\IndexRequest;
+use App\Http\Requests\Ong\StoreRequest;
+use App\Http\Requests\Ong\UpdateRequest;
+use App\Http\Resources\Ong\OngResource;
+use App\Models\Ong;
+use App\Services\Ong\OngService;
 use Illuminate\Http\JsonResponse;
 
-class AnimalController extends Controller
+class OngController extends Controller
 {
 
-    public function __construct(public AnimalService $service) {}
+    public function __construct(public OngService $service) {}
 
 
     /**
@@ -28,8 +27,8 @@ class AnimalController extends Controller
         try {
 
             return ReturnApi::success(
-            AnimalResource::collection(Animal::all()),
-            'Animais listados com sucesso!'
+            OngResource::collection(Ong::all()),
+            'Ong successfully listed!'
             );
         } catch (ApiException $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -46,7 +45,7 @@ class AnimalController extends Controller
                 $this->service->store(
                     $request->validated(),
                 ),
-            'Animal criado com sucesso!',
+            'Ong successfully created!',
             201
             );
         } catch (ApiException $e) {
@@ -57,12 +56,12 @@ class AnimalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Animal $animal): JsonResponse
+    public function show(Ong $ong): JsonResponse
     {
         try {
             return ReturnApi::success(
-                AnimalResource::make($animal),
-                'Animal exibido com sucesso!'
+                OngResource::make($ong),
+                'Ong successfully consulted!'
             );
         } catch (ApiException $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -72,12 +71,12 @@ class AnimalController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request): JsonResponse
+    public function update(UpdateRequest $request,Ong $ong): JsonResponse
     {
         try {
             return ReturnApi::success(
-                $this->service->update($request->validated()),
-                'Animal atualizado com sucesso!'
+                $ong->update($request->validated()),
+                'Ong successfully updated!'
             );
         } catch (ApiException $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -87,12 +86,14 @@ class AnimalController extends Controller
     /**
     * Destroy the specified resource in storage.
     */
-    public function destroy(DestroyRequest $request): JsonResponse
+    public function destroy(Ong $ong): JsonResponse
     {
 
         try {
-            return ReturnApi::success($this->service->destroy($request->validated()),
-                message: 'Animal deletado com sucesso!'
+            $ong->delete();
+
+            return ReturnApi::success(
+                message: 'Ong successfully deleted!'
             );
         } catch (ApiException $e) {
             throw new ApiException($e->getMessage(), $e->getCode());

@@ -15,33 +15,26 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
-    ->withMiddleware(
-        function (Middleware $middleware): void {
-            $middleware->alias(
-                [
-                    'auth.api' => JwtMiddleware::class,
-                ]
-            );
-        }
-    )
-    ->withExceptions(
-        function (Exceptions $exceptions): void {
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->alias([
+            'auth.api' => JwtMiddleware::class,
+        ]);
+    })
+    ->withExceptions(function (Exceptions $exceptions) {
+        $exceptions->renderable(
+            fn (NotFoundHttpException $e): \Illuminate\Http\JsonResponse => ReturnApi::error('Rota não encontrada.')
+        );
 
-            $exceptions->renderable(
-                fn (NotFoundHttpException $e): \Illuminate\Http\JsonResponse => ReturnApi::error('Rota não encontrada.')
-            );
+        $exceptions->renderable(
+            fn (ValidationException $e, $request): \Illuminate\Http\JsonResponse => ReturnApi::error(
+                $e->validator->errors()->first(),
+                $e->validator->errors()->toArray()
+            )
+        );
 
-            $exceptions->renderable(
-                fn (ValidationException $e, $request): \Illuminate\Http\JsonResponse => ReturnApi::error(
-                    $e->validator->errors()->first(),
-                    $e->validator->errors()->toArray()
-                )
-            );
-
-            $exceptions->render(
-                fn (Throwable $e): \Illuminate\Http\JsonResponse => ReturnApi::error(
-                    $e->getMessage() ?? 'Erro inesperado na API.'
-                )
-            );
-        }
-    )->create();
+        $exceptions->render(
+            fn (Throwable $e): \Illuminate\Http\JsonResponse => ReturnApi::error(
+                $e->getMessage() ?? 'Erro inesperado na API.'
+            )
+        );
+    })->create();
