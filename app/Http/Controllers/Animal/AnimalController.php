@@ -7,6 +7,7 @@ use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Animal\DestroyRequest;
 use App\Http\Requests\Animal\IndexRequest;
+use App\Http\Requests\Animal\ShowRequest;
 use App\Http\Requests\Animal\StoreRequest;
 use App\Http\Requests\Animal\UpdateRequest;
 use App\Http\Resources\Animal\AnimalResource;
@@ -28,8 +29,8 @@ class AnimalController extends Controller
         try {
 
             return ReturnApi::success(
-            AnimalResource::collection(Animal::all()),
-            'Animais listados com sucesso!'
+                $this->service->index($request->validated()),
+                'Animais listados com sucesso!'
             );
         } catch (ApiException $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -46,8 +47,8 @@ class AnimalController extends Controller
                 $this->service->store(
                     $request->validated(),
                 ),
-            'Animal criado com sucesso!',
-            201
+                'Animal criado com sucesso!',
+                201
             );
         } catch (ApiException $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -57,11 +58,11 @@ class AnimalController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Animal $animal): JsonResponse
+    public function show(ShowRequest $request): JsonResponse
     {
         try {
             return ReturnApi::success(
-                AnimalResource::make($animal),
+                $this->service->show($request->validated()),
                 'Animal exibido com sucesso!'
             );
         } catch (ApiException $e) {
@@ -85,13 +86,14 @@ class AnimalController extends Controller
     }
 
     /**
-    * Destroy the specified resource in storage.
-    */
+     * Destroy the specified resource in storage.
+     */
     public function destroy(DestroyRequest $request): JsonResponse
     {
 
         try {
-            return ReturnApi::success($this->service->destroy($request->validated()),
+            return ReturnApi::success(
+                $this->service->destroy($request->validated()),
                 message: 'Animal deletado com sucesso!'
             );
         } catch (ApiException $e) {

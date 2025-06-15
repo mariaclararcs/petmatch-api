@@ -28,4 +28,9 @@ class Animal extends Model
         'image',
         'description'
     ];
+
+    public function ong()
+    {
+        return $this->belongsTo(Ong::class);
+    }
 }

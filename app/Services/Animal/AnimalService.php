@@ -81,7 +81,9 @@ class AnimalService
      */
     public function show(array $data): ?Animal
     {
-        return Animal::query()->findOrFail($data['id']);
+        return Animal::query()
+            ->with('ong:id,name_institution')
+            ->findOrFail($data['id']);
     }
 
     /**
