@@ -52,7 +52,7 @@ class AnimalService
         // Sort by field
         $sortBy = $data['sort_by'] ?? 'name';
         $sortOrder = $data['sort_order'] ?? 'asc';
-        $query->orderBy($sortBy, $sortOrder);
+        $query->orderBy($sortBy, $sortOrder)->with('ong:id,name_institution');
 
         return $query->paginate(
             perPage: (int) $data['per_page'],
