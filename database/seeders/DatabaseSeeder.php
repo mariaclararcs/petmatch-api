@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Adopter;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,6 +18,9 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             OngSeeder::class,
             AnimalSeeder::class,
+            AdministratorSeeder::class,
+            AdopterSeeder::class,
+            AdoptionSeeder::class,
         ]);
     }
 }
