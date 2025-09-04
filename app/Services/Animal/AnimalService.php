@@ -19,6 +19,7 @@ class AnimalService
      *     gender: string|null,
      *     min_age: int|null,
      *     max_age: int|null,
+     *     ong_id: string|null,
      * }  $data
      * @return LengthAwarePaginator<Animal>
      */
@@ -47,6 +48,11 @@ class AnimalService
         }
         if (!empty($data['max_age'])) {
             $query->where('age', '<=', $data['max_age']);
+        }
+
+        // Filter by ONG
+        if (!empty($data['ong_id'])) {
+            $query->where('ong_id', $data['ong_id']);
         }
 
         // Sort by field
