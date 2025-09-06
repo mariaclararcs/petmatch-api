@@ -18,6 +18,7 @@ class IndexRequest extends FormRequest
             'gender' => ['nullable', 'string', 'in:male,female'],
             'min_age' => ['nullable', 'integer', 'min:0'],
             'max_age' => ['nullable', 'integer', 'min:0'],
+            'ong_id' => ['nullable', 'uuid']
         ];
     }
 
@@ -33,6 +34,7 @@ class IndexRequest extends FormRequest
             'gender' => 'Gênero',
             'min_age' => 'Idade mínima',
             'max_age' => 'Idade máxima',
+            'ong_id' => 'Organização não governamental'
         ];
     }
 
@@ -48,6 +50,7 @@ class IndexRequest extends FormRequest
             'gender' => $this->query('gender'),
             'min_age' => $this->query('min_age'),
             'max_age' => $this->query('max_age'),
+            'ong_id' => $this->query('ong_id'),
         ]);
     }
 }
