@@ -99,4 +99,8 @@ class AnimalService
     {
         return Animal::query()->findOrFail($data['id'])->update($data);
     }
+
+    public function myAnimals(array $data){
+        return Animal::query()->findOrFail($data['id']);
+    }
 }

@@ -7,6 +7,7 @@ use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Animal\DestroyRequest;
 use App\Http\Requests\Animal\IndexRequest;
+use App\Http\Requests\Animal\MyAnimalRequest;
 use App\Http\Requests\Animal\ShowRequest;
 use App\Http\Requests\Animal\StoreRequest;
 use App\Http\Requests\Animal\UpdateRequest;
@@ -98,6 +99,15 @@ class AnimalController extends Controller
             );
         } catch (ApiException $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
+        }
+    }
+
+    public function myAnimals(MyAnimalRequest $request){
+        try{
+            $data = $this->service->myAnimals($request->validated());
+            return ReturnApi::success($data, 'Animais listados com sucesso.');
+        }catch(ApiException $ex){
+            throw new ApiException($ex->getMessage(), $ex->getCode());
         }
     }
 }
