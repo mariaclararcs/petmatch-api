@@ -100,7 +100,76 @@ class AnimalService
         return Animal::query()->findOrFail($data['id'])->update($data);
     }
 
-    public function myAnimals(array $data){
-        return Animal::query()->findOrFail($data['id']);
+    /**
+     * @param  array{
+     *     search?: string,
+     *     page?: string,
+     *     per_page?: string,
+     *     sort_by?: string,
+     *     sort_order?: string,
+     *     type?: string|null,
+     *     gender?: string|null,
+     *     min_age?: int|null,
+     *     max_age?: int|null,
+     *     ong_id?: string|null,
+     * }  $data
+     * @return LengthAwarePaginator<Animal>
+     */
+    public function myAnimals(array $data): LengthAwarePaginator
+    {
+        $user = auth()->user();
+        $query = Animal::query()->with('ong:id,name_institution');
+        
+        // Se o usuário for admin, mostrar todos os animais
+        if ($user && $user->type_user === 'admin') {
+            // Admin vê todos os animais, mas aplica os filtros normalmente
+        } else {
+            if ($user && $user->id) {
+                $query->join('ongs', 'animals.ong_id', '=', 'ongs.id')
+                      ->where('ongs.user_id', $user->id)
+                      ->select('animals.*');
+            } else {
+                $query->whereRaw('1 = 0');
+            }
+        }
+
+        // Aplicar filtros de busca
+        if (!empty($data['search'])) {
+            $query->where('animals.name', 'like', '%' . $data['search'] . '%');
+        }
+
+        // Filtro por tipo
+        if (!empty($data['type'])) {
+            $query->where('animals.type', $data['type']);
+        }
+
+        // Filtro por gênero
+        if (!empty($data['gender'])) {
+            $query->where('animals.gender', $data['gender']);
+        }
+
+        // Filtro por faixa de idade
+        if (!empty($data['min_age'])) {
+            $query->where('animals.age', '>=', $data['min_age']);
+        }
+        if (!empty($data['max_age'])) {
+            $query->where('animals.age', '<=', $data['max_age']);
+        }
+
+        // Filtro por ONG específica (útil para admin)
+        if (!empty($data['ong_id'])) {
+            $query->where('animals.ong_id', $data['ong_id']);
+        }
+
+        // Ordenação
+        $sortBy = $data['sort_by'] ?? 'name';
+        $sortOrder = $data['sort_order'] ?? 'asc';
+        $query->orderBy('animals.' . $sortBy, $sortOrder);
+
+        // Paginação
+        return $query->paginate(
+            perPage: (int) ($data['per_page'] ?? 10),
+            page: (int) ($data['page'] ?? 1)
+        );
     }
 }

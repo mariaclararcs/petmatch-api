@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  # Banco de dados MySQL
+  petmatch_db:
+    image: mysql:8.0
+    container_name: petmatch_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: petmatch
+      MYSQL_USER: petmatch_user
+      MYSQL_PASSWORD: petmatch_password
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - "3306:3306"
+    volumes:
+      - petmatch_db_data:/var/lib/mysql
+      # Opcional: Para executar scripts SQL iniciais
+      # - ./database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - petmatch_network
+
+# Volumes para persistência dos dados
+volumes:
+  petmatch_db_data:
+    driver: local
+
+# Network para comunicação entre containers (caso precise adicionar outros serviços futuramente)
+networks:
+  petmatch_network:
+    driver: bridge

@@ -28,7 +28,7 @@ class OngController extends Controller
 
             return ReturnApi::success(
             OngResource::collection(Ong::all()),
-            'Ong successfully listed!'
+            'Ong listadas com sucesso!'
             );
         } catch (ApiException $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -45,7 +45,7 @@ class OngController extends Controller
                 $this->service->store(
                     $request->validated(),
                 ),
-            'Ong successfully created!',
+            'Ong criada com sucesso!',
             201
             );
         } catch (ApiException $e) {
@@ -61,7 +61,7 @@ class OngController extends Controller
         try {
             return ReturnApi::success(
                 OngResource::make($ong),
-                'Ong successfully consulted!'
+                'Ong exibida com sucesso!'
             );
         } catch (ApiException $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -76,7 +76,7 @@ class OngController extends Controller
         try {
             return ReturnApi::success(
                 $ong->update($request->validated()),
-                'Ong successfully updated!'
+                'Ong atualizada com sucesso!'
             );
         } catch (ApiException $e) {
             throw new ApiException($e->getMessage(), $e->getCode());
@@ -93,7 +93,7 @@ class OngController extends Controller
             $ong->delete();
 
             return ReturnApi::success(
-                message: 'Ong successfully deleted!'
+                message: 'Ong deletada com sucesso!'
             );
         } catch (ApiException $e) {
             throw new ApiException($e->getMessage(), $e->getCode());

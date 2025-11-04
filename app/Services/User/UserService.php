@@ -28,10 +28,8 @@ class UserService
      */
     public function destroy(array $data): array
     {
-        $user = User::find($data['id']);
-        if ($user instanceof User) {
-            $user->delete();
-        }
+        $user = User::findOrFail($data['id']);
+        $user->delete();
 
         return User::onlyTrashed()->where('id', $data['id'])->first()?->toArray() ?? [];
     }
@@ -56,16 +54,29 @@ class UserService
     /**
      * Atualiza os dados do usuário com base no array fornecido.
      *
-     * @param  array  $data  Dados do usuário a serem atualizados, incluindo a senha que será criptografada.
+     * @param  array  $data  Dados do usuário a serem atualizados. A senha é opcional e será criptografada se fornecida.
      * @return array Dados atualizados do usuário como array ou um array vazio se o usuário não for encontrado.
      */
     public function update(array $data): array
     {
-        $data['password'] = Hash::make($data['password']);
+        // Guardar o ID e remover do array de atualização
+        $id = $data['id'];
+        unset($data['id']);
 
-        User::where('id', $data['id'])->update($data);
+        // Se o password foi fornecido e não está vazio, fazer hash
+        if (isset($data['password']) && !empty($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        } else {
+            // Remover password do array se não foi fornecido ou está vazio
+            unset($data['password']);
+        }
 
-        return User::find($data['id'])?->toArray() ?? [];
+        // Usar findOrFail como os outros serviços e atualizar
+        $user = User::query()->findOrFail($id);
+        $user->update($data);
+
+        // Retornar os dados atualizados
+        return $user->fresh()->toArray();
     }
 
     /**

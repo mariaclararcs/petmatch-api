@@ -9,7 +9,16 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // Logic here
+            'user_id' => 'required',
+            'name_institution' => 'required',
+            'name_responsible' => 'required',
+            'document_responsible' => 'required',
+            'cnpj' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'cep' => 'required',
+            'description' => 'required',
+            'status' => 'required',
         ];
     }
 

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Adoption;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class IdUserRequest extends FormRequest
+class IndexAdoptionRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return true;
+        return false;
     }
 
     /**
@@ -22,14 +22,7 @@ class IdUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id' => 'required',
+            //
         ];
-    }
-
-    public function prepareForValidation(): void
-    {
-        $this->merge([
-            'id' => $this->route('user'), // O parâmetro da rota apiResource é 'user', não 'id'
-        ]);
     }
 }

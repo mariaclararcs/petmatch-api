@@ -9,21 +9,23 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // Logic here
+            'user_id' => 'nullable',
+            'name_institution' => 'nullable',
+            'name_responsible' => 'nullable',
+            'document_responsible' => 'nullable',
+            'cnpj' => 'nullable',
+            'phone' => 'nullable',
+            'address' => 'nullable',
+            'cep' => 'nullable',
+            'description' => 'nullable',
+            'status' => 'nullable',
         ];
     }
-
-    public function attributes(): array
-    {
-        return [
-            // Logic here
-        ];
-    }
-
+    
     public function prepareForValidation(): void
     {
         $this->merge([
-            // Logic here
+            'id' => $this->route('id'),
         ]);
     }
 }

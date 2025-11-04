@@ -11,7 +11,7 @@ class UpdateUserRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,19 @@ class UpdateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id' => 'nullable',
+            'name' => 'nullable',
+            'email' => 'nullable',
+            'password' => 'nullable',
+            'type_user' => 'nullable',
+            'avatar' => 'nullable',
         ];
+    }
+
+    public function prepareForValidation(): void
+    {
+        $this->merge([
+            'id' => $this->route('user'), // O parâmetro da rota apiResource é 'user', não 'id'
+        ]);
     }
 }

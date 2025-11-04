@@ -15,4 +15,20 @@ class Ong extends Model
     use SoftDeletes;
     use HasUuids;
 
+    protected $fillable = [
+        'user_id',
+        'name_institution',
+        'name_responsible',
+        'document_responsible',
+        'cnpj',
+        'phone',
+        'address',
+        'cep',
+        'description',
+        'status'
+    ];
+
+    public function User(){
+        return $this->belongsTo(User::class);
+    }
 }

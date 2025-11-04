@@ -9,21 +9,14 @@ class DestroyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            // Logic here
-        ];
-    }
-
-    public function attributes(): array
-    {
-        return [
-            // Logic here
+            'id' => 'required',
         ];
     }
 
     public function prepareForValidation(): void
     {
         $this->merge([
-            // Logic here
+            'id' => $this->route('id'),
         ]);
     }
 }

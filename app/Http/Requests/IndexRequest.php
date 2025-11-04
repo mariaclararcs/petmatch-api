@@ -24,7 +24,7 @@ class IndexRequest extends FormRequest
         return [
             'per_page' => 'integer|min:1|max:100',
             'page' => 'integer|min:1',
-            'search' => 'sometimes|string|max:255',
+            'search' => 'sometimes|max:255',
             'sort_by' => 'sometimes|string|in:name,age,shelter_date',
             'sort_order' => 'sometimes|string|in:asc,desc',
             'type' => 'sometimes|string|in:dog,cat,other',
