@@ -17,6 +17,7 @@ class StoreRequest extends FormRequest
             'address' => 'required',
             'cep' => 'required',
             'description' => 'required',
+            'ong_image' => 'nullable|string',
             'status' => 'required',
         ];
     }

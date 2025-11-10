@@ -17,6 +17,7 @@ class UpdateRequest extends FormRequest
             'address' => 'nullable',
             'cep' => 'nullable',
             'description' => 'nullable',
+            'ong_image' => 'nullable|string',
             'status' => 'nullable',
         ];
     }

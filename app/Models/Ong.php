@@ -24,6 +24,7 @@ class Ong extends Model
         'address',
         'cep',
         'description',
+        'ong_image',
         'status'
     ];
 
