@@ -11,7 +11,6 @@ class StoreRequest extends FormRequest
         return [
             'user_id' => 'required',
             'name_institution' => 'required',
-            'name_responsible' => 'required',
             'document_responsible' => 'required',
             'cnpj' => 'required',
             'phone' => 'required',

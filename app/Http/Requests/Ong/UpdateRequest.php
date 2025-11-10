@@ -11,7 +11,6 @@ class UpdateRequest extends FormRequest
         return [
             'user_id' => 'nullable',
             'name_institution' => 'nullable',
-            'name_responsible' => 'nullable',
             'document_responsible' => 'nullable',
             'cnpj' => 'nullable',
             'phone' => 'nullable',

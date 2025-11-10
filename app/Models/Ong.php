@@ -18,7 +18,6 @@ class Ong extends Model
     protected $fillable = [
         'user_id',
         'name_institution',
-        'name_responsible',
         'document_responsible',
         'cnpj',
         'phone',
