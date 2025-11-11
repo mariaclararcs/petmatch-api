@@ -14,6 +14,7 @@ class StoreRequest extends FormRequest
             'document_responsible' => 'required',
             'cnpj' => 'required',
             'phone' => 'required',
+            'ong_email' => 'required|email|max:255',
             'address' => 'required',
             'cep' => 'required',
             'description' => 'required',

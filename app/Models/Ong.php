@@ -21,6 +21,7 @@ class Ong extends Model
         'document_responsible',
         'cnpj',
         'phone',
+        'ong_email',
         'address',
         'cep',
         'description',

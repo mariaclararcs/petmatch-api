@@ -14,6 +14,7 @@ class UpdateRequest extends FormRequest
             'document_responsible' => 'nullable',
             'cnpj' => 'nullable',
             'phone' => 'nullable',
+            'ong_email' => 'required|email|max:255',
             'address' => 'nullable',
             'cep' => 'nullable',
             'description' => 'nullable',
