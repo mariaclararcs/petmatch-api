@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             AnimalSeeder::class,
             AdministratorSeeder::class,
             AdopterSeeder::class,
-            AdoptionSeeder::class,
+            // AdoptionSeeder::class,
         ]);
     }
 }
