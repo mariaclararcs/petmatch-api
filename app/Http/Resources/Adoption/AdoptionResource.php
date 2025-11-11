@@ -55,7 +55,7 @@ class AdoptionResource extends JsonResource
             
             'ong' => $this->whenLoaded('ong', [
                 'id' => $this->ong->id,
-                'name' => $this->ong->name,
+                'name_institution' => $this->ong->name_institution,
             ]),
         ];
     }

@@ -10,6 +10,14 @@ use Illuminate\Support\Facades\Auth;
 
 class AdoptionService {
     
+    /**
+     * @param  array{
+     *     search?: string,
+     *     page?: string,
+     *     per_page?: string,
+     *     status?: string|null,
+     * }  $data
+     */
     public function index(array $data): LengthAwarePaginator
     {
         $user = Auth::user();
@@ -18,11 +26,13 @@ class AdoptionService {
             ->with([
                 'adopter:id,name,email,avatar',
                 'animal:id,name,age,gender,type,size,image',
-                'ong:id,name'
+                'ong:id,name_institution' // Corrigido para name_institution
             ])
             ->when($user->type_user === 'ong', function(Builder $query) use ($user) {
                 // ONG só vê as adoções dos seus animais
-                return $query->where('ong_id', $user->ong->id);
+                return $query->whereHas('animal', function($q) use ($user) {
+                    $q->where('ong_id', $user->ong->id);
+                });
             })
             ->when($user->type_user === 'adopter', function(Builder $query) use ($user) {
                 // Adotante só vê suas próprias adoções
@@ -36,6 +46,9 @@ class AdoptionService {
                           $animalQuery->where('name', 'like', '%' . $search . '%');
                       });
                 })
+            )
+            ->when($data['status'] ?? null, fn (Builder $query, string $status)  =>
+                $query->where('status', $status)
             )
             ->orderBy('created_at', 'desc')
             ->paginate(perPage: (int) ($data['per_page'] ?? 15), page: (int) ($data['page'] ?? 1));
@@ -64,6 +77,31 @@ class AdoptionService {
         
         $adoption->update(['status' => $status]);
         
+        return $adoption;
+    }
+
+    /**
+     * @param array{id:string} $data
+     */
+    public function show(array $data): Adoption
+    {
+        $user = Auth::user();
+        
+        $adoption = Adoption::with([
+            'adopter:id,name,email,avatar',
+            'animal:id,name,age,gender,type,size,image,ong_id',
+            'ong:id,name_institution'
+        ])->findOrFail($data['id']);
+
+        // Verificar permissões
+        if ($user->type_user === 'ong' && $adoption->ong_id !== $user->ong->id) {
+            abort(403, 'Unauthorized');
+        }
+
+        if ($user->type_user === 'adopter' && $adoption->adopter_id !== $user->id) {
+            abort(403, 'Unauthorized');
+        }
+
         return $adoption;
     }
 }

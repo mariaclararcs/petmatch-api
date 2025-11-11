@@ -5,10 +5,11 @@ namespace App\Http\Controllers\Adoption;
 use App\Builder\ReturnApi;
 use App\Exceptions\ApiException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Adoption\IndexAdoptionRequest;
+use App\Http\Requests\Adoption\ShowAdoptionRequest;
 use App\Http\Requests\Adoption\StoreAdoptionRequest;
 use App\Http\Requests\Adoption\UpdateAdoptionStatusRequest;
 use App\Http\Resources\Adoption\AdoptionResource;
-use App\Models\Adoption;
 use App\Services\Adoption\AdoptionService;
 use Illuminate\Http\JsonResponse;
 
@@ -18,17 +19,11 @@ class AdoptionController extends Controller
     {
     }
 
-    public function index(): JsonResponse
+    public function index(IndexAdoptionRequest $request): JsonResponse // Usar Request específica
     {
         try {
-            $data = request()->validate([
-                'search' => 'sometimes|string',
-                'page' => 'sometimes|integer',
-                'per_page' => 'sometimes|integer'
-            ]);
-
             return ReturnApi::success(
-                AdoptionResource::collection($this->adoptionService->index($data)),
+                AdoptionResource::collection($this->adoptionService->index($request->validated())),
                 'Adoções listadas com sucesso!'
             );
         } catch (ApiException $e) {
@@ -65,11 +60,10 @@ class AdoptionController extends Controller
         }
     }
 
-    public function show(string $id): JsonResponse
+    public function show(ShowAdoptionRequest $request): JsonResponse // Usar Request específica
     {
         try {
-            $adoption = Adoption::with(['adopter', 'animal', 'ong'])
-                ->findOrFail($id);
+            $adoption = $this->adoptionService->show($request->validated());
 
             return ReturnApi::success(
                 new AdoptionResource($adoption),
