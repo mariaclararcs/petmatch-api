@@ -13,3 +13,5 @@ require base_path('/routes/api/user.php');
 Route::prefix('/adopter')->group(base_path(path: '/routes/api/adopter.php'));
 
 Route::prefix('/adoption')->group(base_path(path: '/routes/api/adoption.php'));
+
+require base_path('/routes/api/upload.php');
